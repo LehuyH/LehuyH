@@ -1,6 +1,6 @@
 <template>
     <header class="min-w-screen min-h-screen flex justify-center items-center flex-col text-center">
-        <h1 class="font-bold text-6xl my-4">Lehuy <span
+        <h1 class="font-extrabold text-6xl my-4">Lehuy <span
                 class="bg-primary text-white px-4 py-2 group block md:inline-block">Hoang</span></h1>
         <section class="my-2 p-4">
             <a href="https://github.com/LehuyH" target="_blank">
