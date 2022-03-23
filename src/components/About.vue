@@ -39,9 +39,12 @@ const windowOpenAnimation = anime.timeline({
 })
 
 const animProgress = computed(()=>{
-    if(y.value < 600) return 0
-    if(y.value > 900) return 100
-    return (y.value - 600) / (900 - 600)
+    const hFull = window.innerHeight
+    const lower = hFull * 0.5
+    const upper = hFull * 1
+    if(y.value < lower) return 0
+    if(y.value > upper) return 100
+    return (y.value) / upper 
 })
 
 onMounted(()=>{
