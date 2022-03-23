@@ -1,8 +1,5 @@
 <template>
     <div id="hackathons" class="min-h-screen max-w-6xl m-auto transition-colors ease-in-out duration-700">
-        <section class="absolute left-0 min-h-screen w-full overflow-x-hidden flex items-center justify-center">
-            
-        </section>
         <article class="p-10 relative z-10 py-10 min-h-screen" id="aboutContent">
             <h1 class="font-bold text-4xl">Hackathons</h1>
             <p class="md:text-xl">
