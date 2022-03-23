@@ -8,6 +8,7 @@
     <main id="main-content">
       <About />
       <Hackathons />
+      <Projects/>
     </main>
   </div>
 </template>
@@ -17,4 +18,5 @@
   import Header from './components/Header.vue'
   import NavBar from './components/NavBar.vue'
   import Hackathons from './components/Hackathons.vue'
+  import Projects from './components/Projects.vue'
 </script>
