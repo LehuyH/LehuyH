@@ -9,6 +9,7 @@
       <About />
       <Hackathons />
       <Projects/>
+      <Contact/>
     </main>
   </div>
 </template>
@@ -19,4 +20,5 @@
   import NavBar from './components/NavBar.vue'
   import Hackathons from './components/Hackathons.vue'
   import Projects from './components/Projects.vue'
+  import Contact from './components/Contact.vue'
 </script>
