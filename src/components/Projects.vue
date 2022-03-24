@@ -1,6 +1,6 @@
 <template>
-    <div id="projects" class="min-h-screen my-10" style="background:url('/img/dot-grid.png');">
-        <article class="max-w-6xl p-10">
+    <div id="projects" class="py-32" style="background:url('/img/dot-grid.png');">
+        <article class="max-w-6xl p-10 m-auto">
             <h1 class="font-bold text-4xl">Projects</h1>
             <p class="md:text-xl">Here are some projects I have worked on outside of hackathons!</p>
             <section class="md:grid grid-cols-2 gap-4 py-8">
@@ -13,12 +13,12 @@
                        </span>
                    </a>
                 </aside>
-                <aside class="justify-center items-center overflow-hidden h-full hidden md:flex">
+                <aside class="h-52 hidden md:flex">
                     <a v-if="selectedProject?.name === 'Studykit'" :href="selectedProject.link" target="_blank">
-                        <img id="demo" class="rounded-md max-w-sm" src="/img/projects/studybio.png">
+                        <img id="demo" class="rounded-md h-52" src="/img/projects/studybio.png">
                     </a>
-                     <a id="demo" v-if="selectedProject?.name === 'Slasho'" :href="selectedProject.link" target="_blank">
-                        <img src="/img/projects/slasho_logo.png">
+                     <a id="demo" class="h-52" v-if="selectedProject?.name === 'Slasho'" :href="selectedProject.link" target="_blank">
+                        <img src="/img/projects/slasho_logo.png" class="h-24 m-auto">
                         <p class="text-center">
                             {{selectedProject.description}}
                         </p>
