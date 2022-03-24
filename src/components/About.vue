@@ -10,7 +10,7 @@
                 <p class="md:text-xl">
                     Hi! I'm a highschool student currently studying Computer Science and Web Development. I have a
                     passion for bringing ideas to <b></b>life through code.
-                    <br><br>I discovered my love for coding at 10 with Scratch💖. Since then, I have gained
+                    <br><br>At the age of ten, I discovered my passion for coding through Scratch💖. Since then, I have gained
                     experience with web technologies such as <span class="text-yellow-600">Javascript</span>
                     <span class="inline-block h-1 w-5 mx-2 rounded-full bg-yellow-600 carat "></span>
                 </p>
