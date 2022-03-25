@@ -1,6 +1,6 @@
 <template>
-    <header class="min-w-screen min-h-screen flex justify-center items-center flex-col text-center">
-        <h1 class="font-extrabold text-6xl my-4">Lehuy <span
+    <header id="header" class="min-w-screen min-h-screen flex justify-center items-center flex-col text-center">
+        <h1 class="font-extrabold text-6xl my-4">LeHuy <span
                 class="bg-primary text-white px-4 py-2 group block md:inline-block">Hoang</span></h1>
         <section class="my-2 p-4">
             <a href="https://github.com/LehuyH" target="_blank">
@@ -23,11 +23,26 @@
                     </svg>
             </a>
         </section>
+        <a href="#about">
+            <svg class="animate-hover text-xl" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" id="footer-sample-full" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M16.293 9.293L12 13.586L7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"></path></svg>
+        </a>
     </header>
 </template>
 
-<script setup lang="ts">
-import anime from 'animejs'
+<style scoped>
+.animate-hover{
+    animation: hover 2s ease-in-out alternate infinite;
+}
 
-
-</script>
+@keyframes hover {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+</style>
