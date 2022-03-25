@@ -2,7 +2,7 @@
     <div id="projects" class="py-32" style="background:url('/img/dot-grid.png');">
         <article class="max-w-6xl p-10 m-auto">
             <h1 class="font-bold text-4xl">Projects</h1>
-            <p class="md:text-xl">Here are some projects I have worked on outside of hackathons!</p>
+            <p class="md:text-xl">Here are a few of my favorite projects I have worked on outside of hackathons!</p>
             <section class="md:grid grid-cols-2 gap-4 py-8">
                 <aside>
                    <a v-for="p in projects" @mouseenter="selectedProject=p" class="block md:mx-0 mx-8 py-2 group" :href="p.link" target="_blank">

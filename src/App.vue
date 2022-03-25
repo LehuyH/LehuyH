@@ -10,6 +10,9 @@
       <Hackathons />
       <Projects/>
       <Contact/>
+      <a href="#header" class="block text-center underline text-blue-500 pb-8">
+        Go Back To Top
+      </a>
     </main>
   </div>
 </template>

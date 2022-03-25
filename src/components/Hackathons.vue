@@ -1,12 +1,12 @@
 <template>
     <div id="hackathons" class="max-w-6xl m-auto transition-colors ease-in-out duration-700">
-        <article class="p-10 relative z-10 min-h-screen">
+        <article class="p-10 relative z-10">
             <h1 class="font-bold text-4xl">Hackathons</h1>
             <p class="md:text-xl">
                 One of my favorite hobbies is competing in hackathons. By getting involved with them, I have been able
                 to improve my overall coding skills. In addition, I discovered and built a strong community of people I
                 respect and enjoy working with through hackathons. So far, I've participated in over
-                <b>{{hackathons.length}}+</b> hackathons so far!
+                <b>{{hackathons.length}}+</b> hackathons!
             </p>
             <aside class="grid grid-rows-2 gap-8">
                 <div class="flex overflow-x-scroll justify-start items-center gap-8 py-5">
