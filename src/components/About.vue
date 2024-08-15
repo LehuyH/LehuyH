@@ -8,7 +8,7 @@
             <article class="bg-slate-800 p-8 mx-8 max-w-2xl font-mono text-white rounded-md shadow-2xl text-left">
                 <h1 class="md:text-5xl text-2xl">About Me 😃</h1>
                 <p class="md:text-xl">
-                    Hi! I'm a highschool student currently studying Computer Science and Web Development. I have a
+                    Hi! I'm a college student currently studying Computer Science and Web Development. I have a
                     passion for bringing ideas to <b></b>life through code.
                     <br><br>At the age of ten, I discovered my passion for coding through Scratch💖. Since then, I have gained
                     experience with web technologies such as <span class="text-yellow-600">Javascript</span>
