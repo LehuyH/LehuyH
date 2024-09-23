@@ -10,4 +10,4 @@ At the age of ten, I discovered my passion for coding through Scratch💖. Since
 - **Frameworks:** React, Vue, Nuxt, Next Node.js/Deno/Bun
 
 ## Contact
-- **LinkedIn:** [LeHuy]([https://www.linkedin.com/in](https://www.linkedin.com/in/lehuyh/))
+- **LinkedIn:** [LeHuy](https://www.linkedin.com/in/lehuyh/)
