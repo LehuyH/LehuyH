@@ -1,4 +1,5 @@
 # Hi there, I'm Le Huy 👋
+[My Resume](https://lehuy.dev/lehuy_hoang_resume.pdf)
 [lehuy.dev](https://lehuy.dev/)
 
 ## About Me
