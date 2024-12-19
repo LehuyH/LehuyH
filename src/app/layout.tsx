@@ -20,7 +20,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${Gambarino.variable}`}>
+    <html lang="en" className={`${Gambarino.variable} styled-scrollbar`}>
       <body>{children}</body>
     </html>
   );
