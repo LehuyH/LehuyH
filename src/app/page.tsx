@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { GithubIcon, LinkedinIcon, LinkIcon } from "lucide-react";
+import { ProjectsCards } from "@/components/ProjectsCards";
 
 export default function HomePage() {
   return (<>
@@ -40,8 +41,13 @@ export default function HomePage() {
       </div>
     </header>
     <main>
-      <section id="projects" className="min-h-screen">
-
+      <section id="projects" className="min-h-screen max-w-5xl grid mx-auto text-center py-4" style={{
+        gridTemplateRows: "auto 1fr"
+      }}>
+        <h1 className="font-serif text-5xl py-6">
+          Projects
+        </h1>
+        <ProjectsCards />
       </section>
     </main>
   </>);

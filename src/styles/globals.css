@@ -62,3 +62,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+*::-webkit-scrollbar {
+  @apply w-1.5 h-1.5;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+  @apply bg-sky-50 dark:bg-sky-700 rounded-r;
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+  @apply bg-sky-200 rounded;
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+  @apply bg-sky-300;
+}
