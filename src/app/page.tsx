@@ -41,10 +41,10 @@ export default function HomePage() {
       </div>
     </header>
     <main>
-      <section id="projects" className="min-h-screen max-w-5xl grid mx-auto text-center py-4" style={{
+      <section id="projects" className="min-h-screen grid mx-auto text-center py-4" style={{
         gridTemplateRows: "auto 1fr"
       }}>
-        <h1 className="font-serif text-5xl py-6">
+        <h1 className="font-serif text-5xl py-12">
           Projects
         </h1>
         <ProjectsCards />
