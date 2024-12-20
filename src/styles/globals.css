@@ -74,10 +74,10 @@
 
 /* Handle */
 *::-webkit-scrollbar-thumb {
-  @apply bg-sky-200 rounded;
+  @apply bg-sky-300 rounded;
 }
 
 /* Handle on hover */
 *::-webkit-scrollbar-thumb:hover {
-  @apply bg-sky-300;
+  @apply bg-sky-200;
 }
