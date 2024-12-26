@@ -57,6 +57,7 @@
 @layer base {
   * {
     @apply border-border scroll-smooth;
+    accent-color: #0EA5E9;
   }
   body {
     @apply bg-background text-foreground;
