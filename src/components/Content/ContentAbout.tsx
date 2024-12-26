@@ -29,7 +29,7 @@ export function ContentAbout() {
                     Outside of coding, I enjoy running and making music with my brother :)
                 </p>
                 <p>
-                    Find me on <BadgeLink Icon={GithubIcon} content="GitHub" href="https://github.com/LehuyH"/> or <BadgeLink Icon={LinkedinIcon} content="LinkedIn" href="https://www.linkedin.com/in/lehuyh"/>! I&apos;m happy to connect and chat about anything!
+                    You can find me on <BadgeLink Icon={GithubIcon} content="GitHub" href="https://github.com/LehuyH"/> or <BadgeLink Icon={LinkedinIcon} content="LinkedIn" href="https://www.linkedin.com/in/lehuyh"/>!
                 </p>
             </article>
         </div>
