@@ -17,7 +17,7 @@ export function ProjectsCards() {
     }[] = [
             {
                 name: "🦊 StudyKit",
-                description: "A web and mobile application helping 56,000+ students worldwide build healthy study habits.",
+                description: "A web and mobile application helping 60,000+ students worldwide build healthy study habits.",
                 link: "https://studykit.app",
                 component: StudyKitCard
             },
@@ -204,13 +204,13 @@ function DisasternautCard({
     href,
     target
 }:CardProps) {
-    return <a href={href} target={target} className={`${className} block bg-[#1B233B] select-none`}>
+    return <a href={href} target={target} className={`${className} block bg-[#1B233B] select-none overflow-hidden`}>
         {/* Background */}
-        <picture className="absolute left-1/2 -translate-x-1/2 w-10/12">
+        <picture className="absolute left-2/3 rotate-6 -translate-x-1/2 w-9/12">
             <img src="/img/projects/disasternaut/disasternaut-desktop.png" alt="Disasternaut Gameplay" className="w-full rounded" />
         </picture>
-        <picture className="absolute right-0 -bottom-12 z-10">
-            <img src="/img/projects/disasternaut/disasternaut-cover.png" alt="Cover Art" className="w-full rounded-lg scale-125 drop-shadow-md origin-bottom-right" />
+        <picture className="absolute left-0 -bottom-12 z-10">
+            <img src="/img/projects/disasternaut/disasternaut-cover.png" alt="Cover Art" className="w-full rounded-lg scale-125 drop-shadow-md origin-bottom -scale-x-125" />
         </picture>
         {children}
     </a>

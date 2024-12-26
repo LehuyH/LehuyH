@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { GithubIcon, LinkedinIcon, LinkIcon } from "lucide-react";
-import { ProjectsCards } from "@/components/ProjectsCards";
-
+import { ChevronDownIcon, LinkIcon } from "lucide-react";
+import { ProjectsCards } from "@/components/Projects/ProjectsCards";
+import { SectionAbout } from "@/components/Section/SectionAbout";
 export default function HomePage() {
   return (<>
     <header className="flex items-center justify-center min-h-screen bg-[linear-gradient(rgba(255,255,255,0),rgba(255,255,255,1)),url('/img/bg.webp')] bg-top bg-no-repeat px-8">
@@ -10,10 +10,10 @@ export default function HomePage() {
         <picture>
           <img src="/img/me.jpg" alt="A picture of me :)" className="rounded-full size-44 border-4 shadow-lg" />
         </picture>
-        <h1 className="md:text-6xl text-5xl tracking-widest font-serif">
+        <h1 className="md:text-6xl text-5xl tracking-widest font-serif motion-preset-shrink">
           LeHuy Hoang
         </h1>
-        <p className="text-lg">
+        <p className="text-lg motion-preset-slide-right motion-delay-700 ">
           I build full stack web applications for fun ❤️
         </p>
         <aside className="flex gap-4">
@@ -38,9 +38,15 @@ export default function HomePage() {
             </PopoverTrigger>
           </Popover>
         </aside>
+        <aside className="text-center pt-6">
+          <a href="#about" className="animate-bounce inline-block text-gray-700">
+            <ChevronDownIcon/>
+          </a>
+        </aside>
       </div>
     </header>
     <main>
+      <SectionAbout/>
       <section id="projects" className="min-h-screen grid mx-auto text-center py-4" style={{
         gridTemplateRows: "auto 1fr"
       }}>
