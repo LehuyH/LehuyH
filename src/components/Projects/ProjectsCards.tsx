@@ -127,7 +127,7 @@ function StudyKitCard({
 
         {/* Mobile */}
         <picture className="md:hidden rounded border-4">
-            <img src="/img/projects/studykit/studykit-mobile.png" alt="StudyKit Mobile Screenshot" className="w-full rounded" />
+            <img src="/img/projects/studykit/studykit-mobile.webp" alt="StudyKit Mobile Screenshot" className="w-full rounded" />
         </picture>
         {children}
     </a>
@@ -142,12 +142,12 @@ function VoidOneCard({
     return <a href={href} target={target} className={`${className} block bg-neutral-100 select-none md:p-0 p-4`}>
         {/* Background */}
         <picture className="absolute left-1/2 md:inline-block hidden -translate-x-1/2 w-10/12">
-            <img src="/img/projects/voidone/voidone-desktop.png" alt="VoidOne Desktop Screenshot" className="w-full rounded" />
+            <img src="/img/projects/voidone/voidone-desktop.webp" alt="VoidOne Desktop Screenshot" className="w-full rounded" />
         </picture>
 
         {/* Mobile */}
         <picture className="md:hidden rounded border-4">
-            <img src="/img/projects/voidone/voidone-mobile.png" alt="VoidOne Mobile Screenshot" className="w-full rounded" />
+            <img src="/img/projects/voidone/voidone-mobile.webp" alt="VoidOne Mobile Screenshot" className="w-full rounded" />
         </picture>
 
         {children}
@@ -163,12 +163,12 @@ function TransferHelperCard({
     return <a href={href} target={target} className={`${className} block bg-slate-800 select-none md:p-0 p-4`}>
         {/* Background */}
         <picture className="absolute left-1/2 md:inline-block hidden -translate-x-1/2 w-10/12">
-            <img src="/img/projects/transfer-helper/transfer-helper-desktop.png" alt="Transfer Helper Desktop Screenshot" className="w-full rounded" />
+            <img src="/img/projects/transfer-helper/transfer-helper-desktop.webp" alt="Transfer Helper Desktop Screenshot" className="w-full rounded" />
         </picture>
 
         {/* Mobile */}
         <picture className="md:hidden rounded border-4 border-gray-700">
-            <img src="/img/projects/transfer-helper/transfer-helper-mobile.png" alt="Transfer Helper Mobile Screenshot" className="w-full rounded" />
+            <img src="/img/projects/transfer-helper/transfer-helper-mobile.webp" alt="Transfer Helper Mobile Screenshot" className="w-full rounded" />
         </picture>
 
         {children}
@@ -184,7 +184,7 @@ function GoatUICard({
     return <a href={href} target={target} className={`${className} block bg-[#F3AD61] overflow-hidden`}>
          {/* Background */}
          <picture className="absolute md:left-1/2 inline-block md:-translate-x-1/2 md:w-4/5 top-4 w-[150%] left-4">
-            <img src="/img/projects/goatui/goatui-desktop.png" alt="GoatUI Desktop Screenshot" className="w-full rounded" />
+            <img src="/img/projects/goatui/goatui-desktop.webp" alt="GoatUI Desktop Screenshot" className="w-full rounded" />
         </picture>
 
         {/* Code Demo */}
@@ -219,12 +219,12 @@ function CivRoyaleCard({
     return <a href={href} target={target} className={`${className} block bg-[#3979A8] select-none md:p-0 p-4`}>
         {/* Background */}
         <picture className="absolute left-1/2 md:inline-block hidden -translate-x-1/2 w-10/12">
-            <img src="/img/projects/civ-royale/civ-royale-desktop.png" alt="Civilization Royale Gameplay" className="w-full rounded" />
+            <img src="/img/projects/civ-royale/civ-royale-desktop.webp" alt="Civilization Royale Gameplay" className="w-full rounded" />
         </picture>
 
         {/* Mobile */}
         <picture className="md:hidden rounded border-4">
-            <img src="/img/projects/civ-royale/civ-royale-mobile.png" alt="Civilization Royale Gameplay" className="w-full rounded" />
+            <img src="/img/projects/civ-royale/civ-royale-mobile.webp" alt="Civilization Royale Gameplay" className="w-full rounded" />
         </picture>
 
         {children}
@@ -240,10 +240,10 @@ function DisasternautCard({
     return <a href={href} target={target} className={`${className} block bg-[#1B233B] select-none md:p-0 p-4 overflow-hidden`}>
         {/* Background */}
         <picture className="absolute md:left-2/3 md:rotate-6 md:-translate-x-1/2 md:w-9/12 w-[150%] left-0">
-            <img src="/img/projects/disasternaut/disasternaut-desktop.png" alt="Disasternaut Gameplay" className="w-full rounded" />
+            <img src="/img/projects/disasternaut/disasternaut-desktop.webp" alt="Disasternaut Gameplay" className="w-full rounded" />
         </picture>
         <picture className="absolute left-0 -bottom-12 z-10 md:w-auto w-[60%]">
-            <img src="/img/projects/disasternaut/disasternaut-cover.png" alt="Cover Art" className="w-full rounded-lg scale-125 drop-shadow-md origin-bottom -scale-x-125" />
+            <img src="/img/projects/disasternaut/disasternaut-cover.webp" alt="Cover Art" className="w-full rounded-lg scale-125 drop-shadow-md origin-bottom -scale-x-125" />
         </picture>
         {children}
     </a>
@@ -258,12 +258,12 @@ function CardforgeCard({
     return <a href={href} target={target} className={`${className} block bg-[#E8CD60] select-none md:p-0 p-4 overflow-hidden`}>
          {/* Background */}
          <picture className="absolute md:left-1/2 inline-block md:-translate-x-1/2 md:w-10/12 w-[150%] rotate-12 md:rotate-0 top-12 md:top-auto">
-            <img src="/img/projects/cardforge/cardforge-desktop.png" alt="Cardforge Desktop Screenshot" className="w-full rounded" />
+            <img src="/img/projects/cardforge/cardforge-desktop.webp" alt="Cardforge Desktop Screenshot" className="w-full rounded" />
         </picture>
 
         {/* Mobile */}
         <picture className="md:hidden rounded border-4">
-            <img src="/img/projects/cardforge/cardforge-mobile.png" alt="Cardforge Mobile Screenshot" className="w-full rounded" />
+            <img src="/img/projects/cardforge/cardforge-mobile.webp" alt="Cardforge Mobile Screenshot" className="w-full rounded" />
         </picture>
         {children}
     </a>
@@ -279,12 +279,12 @@ function CoinagesCard({
     return <a href={href} target={target} className={`${className} block bg-[#3774C0] select-none md:p-0 p-4 overflow-hidden`}>
         {/* Background */}
         <picture className="absolute left-1/2 md:inline-block hidden -translate-x-1/2 w-10/12">
-            <img src="/img/projects/coinages/coinages-desktop.png" alt="Coinages Desktop Screenshot" className="w-full rounded" />
+            <img src="/img/projects/coinages/coinages-desktop.webp" alt="Coinages Desktop Screenshot" className="w-full rounded" />
         </picture>
 
         {/* Mobile */}
         <picture className="md:hidden rounded border-4">
-            <img src="/img/projects/coinages/coinages-mobile.png" alt="Coinages Mobile Screenshot" className="w-full rounded" />
+            <img src="/img/projects/coinages/coinages-mobile.webp" alt="Coinages Mobile Screenshot" className="w-full rounded" />
         </picture>
 
         {children}
