@@ -53,6 +53,16 @@ export function ProjectsCards() {
                 description: "Colonize planets, survive disasters! (Developed in 1 week for Kajam21)",
                 link: "https://disasternaut.lehuy.dev/",
                 component: DisasternautCard
+            },{
+                name: "🎴 Cardforge",
+                description:"An online card battler where the players make the cards!",
+                link: "https://cardforge.lehuy.dev/",
+                component: CardforgeCard
+            },{
+                name: "🪙 Coinages",
+                description: "A incremental clicker game where you build a coin-flipping company from the ground up!",
+                link: "https://coinages.netlify.app/",
+                component: CoinagesCard
             }
         ]
 
@@ -235,6 +245,48 @@ function DisasternautCard({
         <picture className="absolute left-0 -bottom-12 z-10 md:w-auto w-[60%]">
             <img src="/img/projects/disasternaut/disasternaut-cover.png" alt="Cover Art" className="w-full rounded-lg scale-125 drop-shadow-md origin-bottom -scale-x-125" />
         </picture>
+        {children}
+    </a>
+}
+
+function CardforgeCard({
+    className,
+    children,
+    href,
+    target
+}:CardProps) {
+    return <a href={href} target={target} className={`${className} block bg-[#E8CD60] select-none md:p-0 p-4 overflow-hidden`}>
+         {/* Background */}
+         <picture className="absolute md:left-1/2 inline-block md:-translate-x-1/2 md:w-10/12 w-[150%] rotate-12 md:rotate-0 top-12 md:top-auto">
+            <img src="/img/projects/cardforge/cardforge-desktop.png" alt="Cardforge Desktop Screenshot" className="w-full rounded" />
+        </picture>
+
+        {/* Mobile */}
+        <picture className="md:hidden rounded border-4">
+            <img src="/img/projects/cardforge/cardforge-mobile.png" alt="Cardforge Mobile Screenshot" className="w-full rounded" />
+        </picture>
+        {children}
+    </a>
+}
+        
+        
+function CoinagesCard({
+    className,
+    children,
+    href,
+    target
+}:CardProps) {
+    return <a href={href} target={target} className={`${className} block bg-[#3774C0] select-none md:p-0 p-4 overflow-hidden`}>
+        {/* Background */}
+        <picture className="absolute left-1/2 md:inline-block hidden -translate-x-1/2 w-10/12">
+            <img src="/img/projects/coinages/coinages-desktop.png" alt="Coinages Desktop Screenshot" className="w-full rounded" />
+        </picture>
+
+        {/* Mobile */}
+        <picture className="md:hidden rounded border-4">
+            <img src="/img/projects/coinages/coinages-mobile.png" alt="Coinages Mobile Screenshot" className="w-full rounded" />
+        </picture>
+
         {children}
     </a>
 }
