@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     url: "https://lehuy.dev",
     type: "website",
     images: [
-      "https://lehuy.dev/og.png"
+      "https://lehuy.dev/og.jpg"
     ],
   },
   twitter:{
