@@ -8,8 +8,8 @@ Hi! I'm a college student currently studying Computer Science and Web Developmen
 At the age of ten, I discovered my passion for coding through Scratch💖. Since then, I have gained experience with web technologies such as Javascript
 
 ## Skills
-- **Languages:** JavaScript, Python, C++
-- **Frameworks:** React, Vue, Nuxt, Next Node.js/Deno/Bun
+- **Languages:**  Typescript/Javascript; HTML/CSS; Python; Golang; Java; SQL; C++; x86 Assembly
+- **Frameworks:** React; Next.js; Vue; Nuxt; FastAPI; Flask; Express.js
 
 ## Contact
 - **LinkedIn:** [LeHuy](https://www.linkedin.com/in/lehuyh/)
