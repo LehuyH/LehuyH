@@ -50,7 +50,7 @@ export default function HomePage() {
       <section id="projects" className="min-h-screen grid mx-auto text-center py-4" style={{
         gridTemplateRows: "auto 1fr"
       }}>
-        <h1 className="font-serif text-5xl py-12">
+        <h1 className="font-serif text-5xl md:py-12 py-6">
           Projects
         </h1>
         <ProjectsCards />
