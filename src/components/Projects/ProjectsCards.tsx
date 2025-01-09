@@ -30,7 +30,7 @@ export function ProjectsCards() {
             {
                 name: "🐇 Transfer Helper",
                 description: "Helping fellow community college students plan their courses in seconds!",
-                link: "https://lehuy.transfer.dev",
+                link: "https://transfer.lehuy.dev",
                 component: TransferHelperCard
             },
             {
