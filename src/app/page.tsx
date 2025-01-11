@@ -3,6 +3,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ChevronDownIcon, LinkIcon } from "lucide-react";
 import { ProjectsCards } from "@/components/Projects/ProjectsCards";
 import { SectionAbout } from "@/components/Section/SectionAbout";
+import { HackathonsCards } from "@/components/Hackathons/HackathonsCards";
 export default function HomePage() {
   return (<>
     <header className="flex items-center justify-center min-h-screen bg-[linear-gradient(rgba(255,255,255,0),rgba(255,255,255,1)),url('/img/bg.webp')] bg-top bg-no-repeat px-8">
@@ -54,6 +55,13 @@ export default function HomePage() {
           Projects
         </h1>
         <ProjectsCards />
+      </section>
+      <section id="hackathons" className="text-center py-12">
+        <h1 className="font-serif text-5xl md:pt-12 pt-6">
+          Hackathons
+        </h1>
+        
+        <HackathonsCards />
       </section>
     </main>
   </>);
