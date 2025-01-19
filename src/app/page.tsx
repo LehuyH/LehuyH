@@ -6,7 +6,7 @@ import { SectionAbout } from "@/components/Section/SectionAbout";
 import { HackathonsCards } from "@/components/Hackathons/HackathonsCards";
 export default function HomePage() {
   return (<>
-    <header className="flex items-center justify-center min-h-screen bg-[linear-gradient(rgba(255,255,255,0),rgba(255,255,255,1)),url('/img/bg.webp')] bg-top bg-no-repeat px-8">
+    <header className="flex items-center justify-center min-h-screen bg-cover bg-[linear-gradient(rgba(255,255,255,0),rgba(255,255,255,1)),url('/img/bg.webp')] bg-top bg-no-repeat px-8">
       <div className="flex justify-center items-center text-center flex-col gap-4">
         <picture>
           <img src="/img/me.jpg" alt="A picture of me :)" className="rounded-full size-44 border-4 shadow-lg" />
