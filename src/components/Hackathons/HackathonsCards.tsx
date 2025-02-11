@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 
 interface HackathonInfo {
     img: string,
@@ -104,11 +105,11 @@ export function HackathonsCards() {
             <section className={`${(activeHackathon) ? '' : 'grid'} mx-auto md:grid-cols-4 gap-6 w-full grid-cols-2`}>
                 {
                     hackathons.filter(h => !activeHackathon || h.name === activeHackathon?.name).map((hackathon) =>
-                        <button disabled={activeHackathon !== null} key={hackathon.name} onClick={() => setActiveHackathon(hackathon)} className={`${(activeHackathon) ? '' : 'hover:bg-sky-200'} p-4 rounded transition-colors motion-preset-blur-up-md max-w-[50vw]`}>
+                        <motion.button layout disabled={activeHackathon !== null} key={hackathon.name} onClick={() => setActiveHackathon(hackathon)} className={`${(activeHackathon) ? '' : 'hover:bg-sky-200'} p-4 rounded transition-colors motion-preset-blur-up-md max-w-[50vw]`}>
                             <picture className="rounded-lg overflow-hidden flex items-center justify-center">
                                 <img src={hackathon.img} alt={hackathon.name} className="w-full rounded-lg" />
                             </picture>
-                        </button>
+                        </motion.button>
                     )
                 }
             </section>
