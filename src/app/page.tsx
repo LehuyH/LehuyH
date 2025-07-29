@@ -15,8 +15,8 @@ export default function HomePage() {
         <div className="flex flex-col items-center justify-center gap-4 text-center">
           <picture>
             <img
-              src="/img/me.jpg"
-              alt="A picture of me :)"
+              src="/img/me.webp"
+              alt="Lehuy Hoang"
               className="size-44 rounded-full border-4 shadow-lg"
             />
           </picture>
