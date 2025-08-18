@@ -1,0 +1,15 @@
+.container{
+    :global(.slick-slide){
+        overflow: hidden;
+        border-radius: var(--radius);
+        height: inherit !important;
+    }
+
+    :global(.slick-slide > div){
+        height: 100%;
+    }
+
+    :global(.slick-track){
+        display: flex !important;
+    }
+}

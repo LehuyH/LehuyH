@@ -1,7 +1,37 @@
 "use client";
 
 import { useRef } from "react";
-import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import s from "./ProjectCards.module.scss";
+
+function NextArrow(props: React.ComponentProps<"button">) {
+  const { onClick } = props;
+  return (
+    <button
+      aria-label="next"
+      onClick={onClick}
+      className="absolute -right-12 top-1/2 -translate-y-1/2 text-zinc-300"
+    >
+      <ChevronRightIcon className="size-12" />
+    </button>
+  );
+}
+
+function PrevArrow(props: React.ComponentProps<"button">) {
+  const { onClick } = props;
+  return (
+    <button
+      aria-label="previous"
+      onClick={onClick}
+      className="absolute -left-12 top-1/2 -translate-y-1/2 text-zinc-300"
+    >
+      <ChevronRightIcon className="size-12 rotate-180" />
+    </button>
+  );
+}
 
 export function ProjectsCards() {
   const projectsMeta: {
@@ -75,33 +105,25 @@ export function ProjectsCards() {
     },
   ];
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (dir: "left" | "right") => {
-    containerRef.current?.scrollBy(dir === "left" ? -100 : 100, 0);
+  const sliderRef = useRef(null as Slider | null);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
 
   return (
-    <section className="relative flex h-full w-full flex-col-reverse items-center justify-center gap-4 overflow-x-hidden px-8">
-      <aside className="flex w-full justify-evenly md:absolute md:block">
-        <button
-          onClick={() => scroll("left")}
-          aria-label="Previous Project"
-          className="left-8 z-30 inline-block text-blue-300 transition-colors hover:text-blue-200 md:absolute"
-        >
-          <ChevronLeftIcon className="size-12" />
-        </button>
-        <button
-          onClick={() => scroll("right")}
-          aria-label="Next Project"
-          className="right-8 z-30 inline-block text-blue-300 transition-colors hover:text-blue-200 md:absolute"
-        >
-          <ChevronRightIcon className="size-12" />
-        </button>
-      </aside>
-      <div
-        ref={containerRef}
-        className="no-scrollbar relative flex h-full w-full max-w-5xl snap-x snap-mandatory gap-24 overflow-y-hidden overflow-x-visible rounded-lg"
+    <div className="relative rounded">
+      <Slider
+        ref={(slider) => {
+          sliderRef.current = slider;
+        }}
+        {...settings}
+        className={`mx-auto max-w-[80vw] pb-6 md:max-w-6xl ${s.container}`}
       >
         {projectsMeta.map((project, index) => {
           return (
@@ -109,7 +131,7 @@ export function ProjectsCards() {
               href={project.link}
               target="_blank"
               key={index}
-              className="md:p-0` group relative flex w-full shrink-0 snap-center items-center justify-center rounded-lg px-6 transition-transform hover:scale-105"
+              className="group relative flex h-full shrink-0 snap-center items-center justify-center rounded-lg px-6 transition-transform hover:scale-105 md:aspect-video"
             >
               {/* Content */}
               <div className="pointer-events-none absolute left-0 top-0 z-30 h-full w-full rounded-lg bg-[linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.75),rgba(0,0,0,1))] opacity-0 transition-opacity group-hover:opacity-80 md:bg-[linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.75),rgba(0,0,0,1))] md:group-hover:opacity-70" />
@@ -124,8 +146,8 @@ export function ProjectsCards() {
             </project.component>
           );
         })}
-      </div>
-    </section>
+      </Slider>
+    </div>
   );
 }
 
@@ -237,7 +259,7 @@ function GoatUICard({ className, children, href, target }: CardProps) {
     <a
       href={href}
       target={target}
-      className={`${className} block overflow-hidden bg-[#F3AD61]`}
+      className={`${className} block bg-[#F3AD61]`}
     >
       {/* Background */}
       <picture className="absolute left-4 top-4 inline-block w-[150%] md:left-1/2 md:w-4/5 md:-translate-x-1/2">
@@ -266,7 +288,7 @@ function SupabaseJavaCard({ className, children, href, target }: CardProps) {
     <a
       href={href}
       target={target}
-      className={`${className} block select-none overflow-hidden bg-[#0e1117] p-4 md:p-0`}
+      className={`${className} block select-none bg-[#0e1117] p-4 md:p-0`}
     >
       {/* Background */}
       <picture className="absolute left-0 inline-block w-[150%] rotate-6 md:left-1/2 md:w-10/12 md:-translate-x-1/2 md:rotate-0">
@@ -316,7 +338,7 @@ function DisasternautCard({ className, children, href, target }: CardProps) {
     <a
       href={href}
       target={target}
-      className={`${className} block select-none overflow-hidden bg-[#1B233B] p-4 md:p-0`}
+      className={`${className} block select-none bg-[#1B233B] p-4 md:p-0`}
     >
       {/* Background */}
       <picture className="absolute left-0 w-[150%] md:left-2/3 md:w-9/12 md:-translate-x-1/2 md:rotate-6">
@@ -343,7 +365,7 @@ function CardforgeCard({ className, children, href, target }: CardProps) {
     <a
       href={href}
       target={target}
-      className={`${className} block select-none overflow-hidden bg-[#E8CD60] p-4 md:p-0`}
+      className={`${className} block select-none bg-[#E8CD60] p-4 md:p-0`}
     >
       {/* Background */}
       <picture className="absolute top-12 inline-block w-[150%] rotate-12 md:left-1/2 md:top-auto md:w-10/12 md:-translate-x-1/2 md:rotate-0">
@@ -372,7 +394,7 @@ function CoinagesCard({ className, children, href, target }: CardProps) {
     <a
       href={href}
       target={target}
-      className={`${className} block select-none overflow-hidden bg-[#3774C0] p-4 md:p-0`}
+      className={`${className} block select-none bg-[#3774C0] p-4 md:p-0`}
     >
       {/* Background */}
       <picture className="absolute left-1/2 hidden w-10/12 -translate-x-1/2 md:inline-block">

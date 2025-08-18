@@ -75,7 +75,7 @@ export default function HomePage() {
         <SectionAbout />
         <section
           id="projects"
-          className="mx-auto grid min-h-screen py-4 text-center"
+          className="mx-auto grid py-4 text-center md:min-h-screen"
           style={{
             gridTemplateRows: "auto 1fr",
           }}
