@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlantic History Map Quiz</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #12100a;
+            color: #e8d5b0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #header {
+            background: linear-gradient(135deg, #2a1a05, #1a1208);
+            border-bottom: 2px solid #7a5910;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        #header h1 {
+            font-size: 1.25em;
+            color: #d4a843;
+            letter-spacing: .03em;
+            white-space: nowrap;
+        }
+
+        .mode-btn {
+            padding: 6px 15px;
+            background: #231808;
+            border: 1px solid #7a5910;
+            color: #c9a83a;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: .88em;
+            transition: all .2s;
+        }
+
+        .mode-btn.active {
+            background: #7a5910;
+            color: #fff;
+            border-color: #d4a843;
+        }
+
+        .mode-btn:hover:not(.active) {
+            background: #3a2512;
+        }
+
+        #main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            width: 275px;
+            min-width: 275px;
+            background: #180f05;
+            border-right: 1px solid #4a2f08;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #map-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .sidebar-head {
+            padding: 11px 14px;
+            border-bottom: 1px solid #3a2208;
+            background: #1e1208;
+            flex-shrink: 0;
+        }
+
+        .sidebar-head h2 {
+            font-size: .95em;
+            color: #d4a843;
+            margin-bottom: 3px;
+        }
+
+        .sidebar-head p {
+            font-size: .73em;
+            color: #8b6025;
+        }
+
+        #location-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .loc-item {
+            padding: 7px 10px;
+            margin-bottom: 3px;
+            background: #1e1208;
+            border: 1px solid #2a1808;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all .15s;
+            font-size: .83em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .loc-item:hover {
+            background: #2a1808;
+            border-color: #7a5910;
+        }
+
+        .loc-item.active {
+            background: #2a1808;
+            border-color: #d4a843;
+        }
+
+        .loc-name {
+            flex: 1;
+        }
+
+        .loc-badges {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+            flex-shrink: 0;
+        }
+
+        .status-dot.correct {
+            background: #4caf50;
+            box-shadow: 0 0 4px #4caf50;
+        }
+
+        .status-dot.close {
+            background: #8bc34a;
+        }
+
+        .status-dot.decent {
+            background: #ff9800;
+        }
+
+        .status-dot.missed {
+            background: #f44336;
+            box-shadow: 0 0 4px #f44336;
+        }
+
+        #info-panel {
+            padding: 12px 14px;
+            border-top: 1px solid #3a2208;
+            background: #120c04;
+            flex-shrink: 0;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        #info-panel h3 {
+            color: #d4a843;
+            margin-bottom: 6px;
+            font-size: .95em;
+        }
+
+        .desc {
+            font-size: .8em;
+            line-height: 1.6;
+            color: #c9b89a;
+        }
+
+        .hint-box {
+            margin-top: 9px;
+            padding: 8px 10px;
+            background: #1e1208;
+            border-left: 3px solid #7a5910;
+            font-size: .78em;
+            color: #b09868;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .tags {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: .7em;
+            padding: 2px 7px;
+            border-radius: 10px;
+            background: #1e1208;
+            border: 1px solid #4a2f08;
+            color: #a08040;
+        }
+
+        #quiz-sidebar {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        #score-bar {
+            display: flex;
+            border-bottom: 1px solid #3a2208;
+            flex-shrink: 0;
+        }
+
+        .score-cell {
+            flex: 1;
+            text-align: center;
+            padding: 9px 4px;
+            border-right: 1px solid #3a2208;
+        }
+
+        .score-cell:last-child {
+            border-right: none;
+        }
+
+        .score-num {
+            font-size: 1.25em;
+            font-weight: bold;
+            color: #d4a843;
+        }
+
+        .score-label {
+            font-size: .63em;
+            color: #7a5910;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        #quiz-current {
+            padding: 12px 14px;
+            border-bottom: 1px solid #3a2208;
+            background: #1e1208;
+            flex-shrink: 0;
+            display: none;
+        }
+
+        #quiz-q-name {
+            font-size: 1.05em;
+            color: #d4a843;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        #quiz-q-meta {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 7px;
+            flex-wrap: wrap;
+        }
+
+        #quiz-instruction {
+            font-size: .79em;
+            color: #c9a050;
+            margin-bottom: 7px;
+        }
+
+        #quiz-progress {
+            font-size: .73em;
+            color: #7a5910;
+            margin-top: 4px;
+        }
+
+        #hint-btn {
+            font-size: .77em;
+            color: #d4a843;
+            cursor: pointer;
+            background: none;
+            border: 1px solid #4a2f08;
+            border-radius: 3px;
+            padding: 3px 8px;
+            font-family: Georgia, serif;
+        }
+
+        #hint-btn:hover {
+            background: #2a1808;
+        }
+
+        #hint-text {
+            font-size: .77em;
+            color: #b09868;
+            font-style: italic;
+            line-height: 1.5;
+            padding: 7px;
+            background: #150d03;
+            border-left: 2px solid #7a5910;
+            display: none;
+            margin-top: 5px;
+        }
+
+        #quiz-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        #quiz-list .loc-item {
+            cursor: default;
+        }
+
+        #quiz-start-screen {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #quiz-start-screen p {
+            font-size: .82em;
+            color: #c9b89a;
+            line-height: 1.6;
+        }
+
+        select {
+            width: 100%;
+            background: #1e1208;
+            color: #e8d5b0;
+            border: 1px solid #4a2f08;
+            padding: 5px;
+            border-radius: 4px;
+            font-family: Georgia, serif;
+            font-size: .84em;
+        }
+
+        select option {
+            background: #1e1208;
+        }
+
+        .big-btn {
+            width: 100%;
+            padding: 9px;
+            background: #7a5910;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: .93em;
+            letter-spacing: .03em;
+            transition: background .2s;
+        }
+
+        .big-btn:hover {
+            background: #9a7020;
+        }
+
+        .big-btn.sec {
+            background: #2a1808;
+            border: 1px solid #7a5910;
+            color: #d4a843;
+        }
+
+        .big-btn.sec:hover {
+            background: #3a2212;
+        }
+
+        #review-sidebar {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        #review-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 7px;
+        }
+
+        .review-item {
+            padding: 9px 11px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            border: 1px solid;
+            font-size: .8em;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .review-item:hover {
+            opacity: .82;
+        }
+
+        .review-item.correct {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, .08);
+        }
+
+        .review-item.decent {
+            border-color: #ff9800;
+            background: rgba(255, 152, 0, .08);
+        }
+
+        .review-item.missed {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, .08);
+        }
+
+        .review-item h4 {
+            margin-bottom: 3px;
+            font-size: .9em;
+        }
+
+        .r-dist {
+            color: #8b6025;
+            margin-bottom: 4px;
+        }
+
+        .r-hint {
+            color: #9a8060;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .review-stats {
+            padding: 10px 14px;
+            border-bottom: 1px solid #3a2208;
+            background: #1e1208;
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .r-stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .r-stat-num {
+            font-size: 1.2em;
+            color: #d4a843;
+        }
+
+        .r-stat-label {
+            font-size: .63em;
+            color: #7a5910;
+        }
+
+        #feedback {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            z-index: 1000;
+            background: rgba(18, 12, 4, .95);
+            border: 2px solid #7a5910;
+            border-radius: 8px;
+            padding: 14px 18px;
+            text-align: center;
+            display: none;
+            width: 260px;
+            max-width: 280px;
+            box-shadow: 0 0 30px rgba(122, 89, 16, .5);
+        }
+
+        #feedback h2 {
+            font-size: 1.2em;
+            margin-bottom: 6px;
+        }
+
+        .fb-perfect h2 {
+            color: #4caf50;
+        }
+
+        .fb-close h2 {
+            color: #8bc34a;
+        }
+
+        .fb-decent h2 {
+            color: #ff9800;
+        }
+
+        .fb-missed h2 {
+            color: #f44336;
+        }
+
+        .fb-locname {
+            font-size: .97em;
+            color: #d4a843;
+            margin-bottom: 4px;
+            font-style: italic;
+        }
+
+        .fb-dist {
+            font-size: .86em;
+            color: #c9b89a;
+            margin-bottom: 3px;
+        }
+
+        .fb-desc {
+            font-size: .72em;
+            color: #9a8878;
+            margin: 6px 0;
+            line-height: 1.4;
+            font-style: italic;
+            border-top: 1px solid #3a2208;
+            padding-top: 6px;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .fb-btn-row {
+            display: flex;
+            gap: 9px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .fb-btn {
+            padding: 7px 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: .9em;
+        }
+
+        .fb-next {
+            background: #7a5910;
+            color: #fff;
+        }
+
+        .fb-next:hover {
+            background: #9a7020;
+        }
+
+        .fb-skip {
+            background: #2a1808;
+            color: #c9a050;
+            border: 1px solid #4a2f08;
+        }
+
+        .fb-skip:hover {
+            background: #3a2212;
+        }
+
+        #map.quiz-mode {
+            cursor: crosshair;
+        }
+
+        #legend {
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            background: rgba(18, 12, 4, .92);
+            border: 1px solid #4a2f08;
+            border-radius: 5px;
+            padding: 9px 12px;
+            font-size: .74em;
+            color: #b09868;
+            z-index: 500;
+            pointer-events: none;
+        }
+
+        #legend div {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 3px;
+        }
+
+        #legend div:last-child {
+            margin-bottom: 0;
+        }
+
+        .leg-pt {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4a9eff;
+            border: 2px solid rgba(255, 255, 255, .5);
+            flex-shrink: 0;
+        }
+
+        .leg-reg {
+            width: 14px;
+            height: 9px;
+            border: 2px dashed #ff8c42;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #120c04;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4a2f08;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <h1>⚓ Atlantic History Map Quiz</h1>
+        <button class="mode-btn active" id="btn-study" onclick="setMode('study')">📚 Study</button>
+        <button class="mode-btn" id="btn-quiz" onclick="setMode('quiz')">🎯 Quiz</button>
+        <button class="mode-btn" id="btn-review" onclick="setMode('review')">📊 Review</button>
+    </div>
+    <div id="main">
+        <div id="sidebar">
+            <div id="study-sidebar" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+                <div class="sidebar-head">
+                    <h2>📍 All 22 Locations</h2>
+                    <p>🔵 Point &nbsp;|&nbsp; 🟠 Region &nbsp;·&nbsp; Click to learn + zoom in</p>
+                </div>
+                <div id="location-list"></div>
+                <div id="info-panel">
+                    <p style="color:#7a5910;font-style:italic;font-size:.82em;">← Select a location to see details &amp;
+                        map hints</p>
+                </div>
+            </div>
+            <div id="quiz-sidebar">
+                <div id="score-bar">
+                    <div class="score-cell">
+                        <div class="score-num" id="sq-correct">0</div>
+                        <div class="score-label">Correct</div>
+                    </div>
+                    <div class="score-cell">
+                        <div class="score-num" id="sq-decent">0</div>
+                        <div class="score-label">Decent</div>
+                    </div>
+                    <div class="score-cell">
+                        <div class="score-num" id="sq-miss">0</div>
+                        <div class="score-label">Missed</div>
+                    </div>
+                    <div class="score-cell">
+                        <div class="score-num" id="sq-pct">—</div>
+                        <div class="score-label">Score</div>
+                    </div>
+                </div>
+                <div id="quiz-current">
+                    <div id="quiz-q-name"></div>
+                    <div id="quiz-q-meta"></div>
+                    <div id="quiz-instruction">👆 Click the map to place your answer</div>
+                    <button id="hint-btn" onclick="toggleHint()">💡 Show Hint</button>
+                    <div id="hint-text"></div>
+                    <div id="quiz-progress"></div>
+                </div>
+                <div id="quiz-start-screen">
+                    <p>Test yourself on all 22 Atlantic history locations. Click the map to identify each place — you'll
+                        be scored on accuracy based on distance.</p>
+                    <label style="font-size:.79em;color:#8b6025;display:block;margin-bottom:3px;">Order:</label>
+                    <select id="quiz-order">
+                        <option value="random">🎲 Random order</option>
+                        <option value="sequential">📋 Sequential</option>
+                        <option value="missed">🔥 Missed locations first</option>
+                    </select>
+                    <label
+                        style="font-size:.79em;color:#8b6025;display:block;margin-bottom:3px;margin-top:7px;">Difficulty:</label>
+                    <select id="quiz-diff">
+                        <option value="normal">Normal (hints available)</option>
+                        <option value="hard">Hard (no hints)</option>
+                    </select>
+                    <button class="big-btn" onclick="startQuiz()">Start Quiz →</button>
+                </div>
+                <div id="quiz-list"></div>
+            </div>
+            <div id="review-sidebar">
+                <div class="sidebar-head">
+                    <h2>📊 Results Review</h2>
+                    <p>Click any item to see it on the map</p>
+                </div>
+                <div id="review-stats-bar" class="review-stats" style="display:none;"></div>
+                <div id="review-list"></div>
+            </div>
+        </div>
+        <div id="map-container">
+            <div id="map"></div>
+            <div id="feedback"></div>
+            <div id="legend">
+                <div><span class="leg-pt"></span> Point location</div>
+                <div><span class="leg-reg"></span> Region (approx.)</div>
+                <div><span
+                        style="width:10px;height:10px;border-radius:50%;background:#d4a843;flex-shrink:0;display:inline-block;"></span>
+                    Correct answer</div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const LOCATIONS = [
+            {
+                id: 1, name: "Potosí", type: "point", lat: -19.58, lng: -65.75, acceptKm: 200, period: "Colonial Silver",
+                desc: "A silver mining boomtown high in the Bolivian Andes. 'Worth a Potosí' became a Spanish expression. Its silver fueled the entire Atlantic economy and financed the slave trade.",
+                hint: "High in the Andes of Bolivia. Find the dramatic mountain spine running down western South America — Potosí sits roughly halfway down the continent, east of the Andes peaks on a high plateau. Modern Bolivia, between Peru and Argentina."
+            },
+            {
+                id: 2, name: "Granada", type: "point", lat: 37.18, lng: -3.60, acceptKm: 150, period: "Iberian Peninsula",
+                desc: "The last Moorish kingdom in Iberia, reconquered in January 1492 — the same year Columbus sailed. Its fall freed the Spanish Crown to finance Atlantic exploration. Columbus received his royal commission here.",
+                hint: "Southern Spain, near the bottom of the Iberian Peninsula. Look at Europe's southwestern corner — Spain's southern coast faces North Africa across the narrow Strait of Gibraltar. Granada is slightly inland from that southern coast, tucked in a mountain range."
+            },
+            {
+                id: 3, name: "Hispaniola", type: "region", lat: 18.9, lng: -72.7, acceptKm: 380, period: "Caribbean",
+                desc: "First major Spanish colony in the Americas — Columbus landed here in 1492. The island became the brutal epicenter of Caribbean colonization, early plantation slavery, and near-total extermination of the Taíno people. Today it's Haiti (west) and Dominican Republic (east).",
+                hint: "The large island in the Caribbean between Cuba (to the west) and Puerto Rico (to the east). It's the second-largest Caribbean island. Look for the chain of islands curving from Florida toward Venezuela — Hispaniola sits roughly in the middle of that arc."
+            },
+            {
+                id: 4, name: "Kingdom of the Kongo", type: "region", lat: -5.5, lng: 14.5, acceptKm: 650, period: "Central Africa",
+                desc: "A powerful African kingdom and major supplier of enslaved people in the Atlantic trade. The Kongolese king initially engaged diplomatically with Portugal — sending ambassadors, converting to Christianity — before the slave trade devastated the kingdom.",
+                hint: "Central-west Africa, straddling the equator. Find where the Congo River meets the Atlantic coast — the Kingdom of the Kongo was just south of the river mouth, extending inland. It covers parts of modern DRC, Republic of Congo, and northern Angola."
+            },
+            {
+                id: 5, name: "Canary Islands", type: "region", lat: 28.1, lng: -15.5, acceptKm: 300, period: "Atlantic Islands",
+                desc: "Spanish-controlled archipelago used as a crucial resupply stop on voyages to the Americas. Columbus stopped here on his 1492 voyage. Their conquest in the 1400s was an early 'laboratory' for later Caribbean colonization.",
+                hint: "Off the northwest coast of Africa (modern Morocco/Western Sahara). They sit in the Atlantic Ocean, roughly level with southern Morocco — about 100km off the African coast. Look for islands just south of Europe, off Africa's northwest corner."
+            },
+            {
+                id: 6, name: "Gambia River", type: "region", lat: 13.45, lng: -15.0, acceptKm: 400, period: "West Africa",
+                desc: "A key river highway for the slave trade. European traders sailed inland via the Gambia River to access enslaved people from the West African interior. The tiny country of The Gambia is essentially just the river's valley.",
+                hint: "West Africa — a river flowing west into the Atlantic. Look for the tiny country of The Gambia on Africa's west coast, roughly at the same latitude as the Caribbean. The river mouth opens to the Atlantic just south of Senegal, on the bulging western coast of Africa."
+            },
+            {
+                id: 7, name: "Tawantinsuyu", type: "region", lat: -15.0, lng: -70.0, acceptKm: 1000, period: "Inca Empire",
+                desc: "The Inca Empire ('The Four Regions Together'). Centered on Cusco, it stretched 2,500 miles along the Andes — the largest pre-Columbian empire in the Americas. Conquered by Pizarro beginning in 1532.",
+                hint: "A long, narrow empire along the western coast of South America. Stretches from modern Ecuador in the north through Peru, Bolivia, and into Chile and Argentina. It follows the Andes mountains — the jagged spine on South America's west side. Center your click around Peru or Bolivia."
+            },
+            {
+                id: 8, name: "Gulf Stream", type: "region", lat: 36.0, lng: -68.0, acceptKm: 900, period: "Atlantic Ocean",
+                desc: "A powerful warm ocean current in the western Atlantic. It runs north along the US East Coast (Florida → the Carolinas → New England), then curves northeast toward Europe. Spanish ships used it as the return highway from the Americas.",
+                hint: "An ocean current in the western Atlantic Ocean. It starts in the Gulf of Mexico, flows north along the US East Coast, then curves northeast into the open Atlantic toward Europe. Click somewhere in the western Atlantic — east of the US Carolinas/Virginia coast — or on the Florida coast itself."
+            },
+            {
+                id: 9, name: "Turtle Island", type: "region", lat: 48.0, lng: -96.0, acceptKm: 2800, period: "Indigenous",
+                desc: "The Anishinaabe and many other Indigenous nations' name for North America. Used to center Indigenous perspectives on the continent rather than European colonial naming. A reminder that North America had rich, complex civilizations long before European contact.",
+                hint: "This is the Indigenous name for ALL of North America. You can click literally anywhere on the North American continent — Alaska, Canada, the US, Mexico all count. The Canadian prairies or US Great Plains is a safe center choice."
+            },
+            {
+                id: 10, name: "Central Valley of Mexico", type: "region", lat: 19.3, lng: -99.2, acceptKm: 300, period: "Mesoamerica",
+                desc: "The high plateau (about 7,000 ft elevation) in central Mexico, surrounded by volcanic mountains. Heart of Aztec civilization. After the conquest, it became the core of New Spain. Modern Mexico City sits here.",
+                hint: "The high plateau in the center of Mexico — well south of the US border but not as far south as the Yucatan peninsula. Look for where Mexico narrows in the middle. The valley is landlocked, ringed by volcanoes. Click in central Mexico around where Mexico City is today."
+            },
+            {
+                id: 11, name: "Tenochtitlán", type: "point", lat: 19.43, lng: -99.13, acceptKm: 120, period: "Aztec Capital",
+                desc: "Capital of the Aztec Empire, built on an island in Lake Texcoco in the Central Valley of Mexico. Conquered by Hernán Cortés in 1521. With 200,000+ residents, it was one of the world's largest cities. Modern Mexico City sits directly on its ruins.",
+                hint: "Exactly where Mexico City is today. On an island in Lake Texcoco (now drained) in central Mexico. If you find the Central Valley of Mexico, Tenochtitlán is right at its heart — same spot, basically just click Mexico City's position."
+            },
+            {
+                id: 12, name: "Elmina", type: "point", lat: 5.08, lng: -1.35, acceptKm: 200, period: "Gold Coast (Ghana)",
+                desc: "The first European trading post in sub-Saharan Africa, built by Portugal in 1482. A major slave-trading fort — thousands of enslaved Africans passed through its dungeons before crossing the Atlantic. 'Elmina' means 'The Mine' in Portuguese.",
+                hint: "On the Gold Coast (modern Ghana) in West Africa. Find where Africa juts most westward into the Atlantic — the Gulf of Guinea. Ghana is right along that coast. Elmina is on the shoreline, just west of Accra. Look for Africa's western 'bulge.'"
+            },
+            {
+                id: 13, name: "Lisbon", type: "point", lat: 38.72, lng: -9.14, acceptKm: 120, period: "Portugal",
+                desc: "Portugal's capital and the hub of Portuguese maritime exploration and the slave trade. Vasco da Gama, Bartolomeu Dias, and others launched world-changing voyages from here. An early center of the global slave trade.",
+                hint: "The capital of Portugal, on the far western coast of the Iberian Peninsula, facing the Atlantic directly. It's the westernmost capital in mainland Europe. Find Spain on the map — Portugal is to Spain's west, and Lisbon is right where Portugal meets the Atlantic Ocean."
+            },
+            {
+                id: 14, name: "Seville", type: "point", lat: 37.39, lng: -5.99, acceptKm: 120, period: "Spain",
+                desc: "Spain's gateway to the Americas — the Casa de Contratación here controlled all trade with the New World. Silver from Potosí flowed through Seville, making it Spain's wealthiest city. Columbus sailed from its outport, Palos de la Frontera.",
+                hint: "Southern Spain on the Guadalquivir River, about 90km inland from the Atlantic coast. Near the bottom of Spain, slightly northeast of where the coast meets the ocean. Look near where you placed Granada — Seville is to Granada's west/northwest, just inland from the southwestern Spanish coast."
+            },
+            {
+                id: 15, name: "Lima", type: "point", lat: -12.06, lng: -77.04, acceptKm: 200, period: "Colonial Peru",
+                desc: "Capital of the Viceroyalty of Peru, founded by Francisco Pizarro in 1535. The administrative center of Spanish South America and the conduit through which Andean silver traveled to the Pacific and eventually to Spain.",
+                hint: "On the PACIFIC (WEST) coast of Peru — not the Atlantic! Lima faces west toward the ocean on a very narrow coastal strip between the Andes and the sea. Look at South America's west coast, roughly a third of the way down from the top. It's almost directly across from Brazil."
+            },
+            {
+                id: 16, name: "Jamestown", type: "point", lat: 37.21, lng: -76.78, acceptKm: 200, period: "British America",
+                desc: "The first permanent English settlement in North America (1607). Located on the James River in Virginia, inside the Chesapeake Bay region. Site of intense conflict with the Powhatan Confederacy and the beginnings of tobacco cultivation and indentured servitude.",
+                hint: "On the eastern coast of North America, inside the Chesapeake Bay. Find the large bay just south of where Washington D.C. is — Jamestown is on a peninsula in the James River opening into that bay. Look for Virginia on the US East Coast, roughly at the same latitude as Spain/Portugal."
+            },
+            {
+                id: 17, name: "Timbuktu", type: "point", lat: 16.77, lng: -3.00, acceptKm: 280, period: "West Africa / Sahara",
+                desc: "A legendary center of Islamic scholarship and trans-Saharan trade. Connected the Atlantic trade world to internal African commerce via gold and salt routes. At its peak in the 15th century it had 25,000 students and immense wealth.",
+                hint: "In the Sahara's southern edge in Mali, West Africa. Find the Niger River — it makes a big U-shape or bend in West Africa, flowing northeast then curving back south. Timbuktu sits near the TOP of that bend, where the river approaches the Sahara before turning south again."
+            },
+            {
+                id: 18, name: "Cahokia", type: "point", lat: 38.65, lng: -90.06, acceptKm: 200, period: "Pre-Columbian North America",
+                desc: "The largest pre-Columbian city north of Mexico, inhabited 700–1400 CE. At its peak it had 10,000–20,000 residents — larger than contemporary London. Built by the Mississippian culture on the Mississippi River floodplain opposite modern St. Louis.",
+                hint: "In Illinois, USA — directly across the Mississippi River from St. Louis, Missouri. Look for where the Mississippi River runs through the middle of North America. Cahokia is deep inland, near the very center of the continent, where the Missouri River joins the Mississippi."
+            },
+            {
+                id: 19, name: "Angola", type: "region", lat: -12.0, lng: 17.5, acceptKm: 650, period: "Southwest Africa",
+                desc: "A major source of enslaved Africans for the transatlantic slave trade, particularly for Brazil. Portuguese-colonized from the 16th century. More enslaved Africans came from Angola than any other region — their descendants include many African Americans.",
+                hint: "On the southwest coast of Africa, just south of the Congo River and the Kingdom of the Kongo. Look for the large country on Africa's southwestern Atlantic coast — Angola sits just south of the equator, bordering the DRC (Congo) to the north. It's a broad coastal nation."
+            },
+            {
+                id: 20, name: "Land of the Tupi peoples", type: "region", lat: -10.0, lng: -44.0, acceptKm: 900, period: "Brazil / Indigenous",
+                desc: "The Tupi were the dominant indigenous peoples of coastal Brazil encountered by the Portuguese. Their territory was devastated by colonization and disease. The Tupi languages influenced Portuguese and gave words like 'jaguar,' 'tapioca,' and 'toucan.'",
+                hint: "Coastal Brazil — the eastern hump of South America that juts toward Africa. Brazil's coast directly faces Africa. The Tupi lived mainly along the coast, especially northeastern and eastern Brazil (around modern Salvador and Recife). Click on the eastern coastline of Brazil."
+            },
+            {
+                id: 21, name: "New France", type: "region", lat: 47.0, lng: -72.0, acceptKm: 1300, period: "French America",
+                desc: "French colonial territory spanning the St. Lawrence River valley through the Great Lakes to the Mississippi River. Key in the fur trade and Indigenous alliances. Lost to Britain in 1763. Predecessor to modern Quebec.",
+                hint: "The French colonial territory in northeastern North America. Centered on the St. Lawrence River valley — think modern Quebec and Montreal. Extended west through the Great Lakes and south down the Mississippi. Click anywhere in Quebec or the Great Lakes region of Canada."
+            },
+            {
+                id: 22, name: "Ireland", type: "region", lat: 53.2, lng: -8.0, acceptKm: 350, period: "North Atlantic",
+                desc: "A key but often-overlooked part of the Atlantic world. Many Irish indentured servants were transported to Caribbean plantations. England's colonization of Ireland was an early laboratory for later colonial practices.",
+                hint: "The island to the WEST of Great Britain (England/Scotland/Wales). Look at northwestern Europe — find the British Isles. Ireland is the westernmost large island there in the North Atlantic, just to the left (west) of Britain. Don't confuse it with Britain itself."
+            }
+        ];
+
+        let mode = 'study', map, mapLayers = {}, selectedId = null;
+        let quiz = { active: false, queue: [], idx: 0, results: [], hardMode: false, listener: null, fmks: [] };
+        let allResults = [];
+
+        function initMap() {
+            map = L.map('map', { center: [20, -25], zoom: 3, minZoom: 2, maxZoom: 9, zoomControl: true });
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}',
+                { attribution: 'Tiles © Esri', maxZoom: 9 }).addTo(map);
+            drawStudyMarkers();
+        }
+
+        function makeLbl(name, color = '#e8d5b0') {
+            return L.divIcon({ html: `<div style="font-size:10px;white-space:nowrap;color:${color};text-shadow:1px 1px 2px #000,-1px -1px 2px #000,0 0 3px #000;font-family:Georgia,serif;font-weight:bold;pointer-events:none;">${name}</div>`, className: '', iconAnchor: [-8, 6] });
+        }
+
+        function clearML() { Object.values(mapLayers).forEach(ls => { if (Array.isArray(ls)) ls.forEach(l => l.remove()); else ls.remove(); }); mapLayers = {}; }
+
+        function drawStudyMarkers() {
+            clearML();
+            LOCATIONS.forEach(loc => {
+                const isP = loc.type === 'point', c = isP ? '#4a9eff' : '#ff8c42', ls = [];
+                if (!isP) {
+                    ls.push(L.circle([loc.lat, loc.lng], { radius: loc.acceptKm * 700, color: c, fillColor: c, fillOpacity: .07, weight: 1.5, dashArray: '7,5' }).addTo(map).on('click', () => selectStudyLoc(loc.id)));
+                }
+                ls.push(L.circleMarker([loc.lat, loc.lng], { radius: isP ? 7 : 5, color: c, fillColor: c, fillOpacity: .9, weight: 2 }).addTo(map).on('click', () => selectStudyLoc(loc.id)));
+                ls.push(L.marker([loc.lat, loc.lng], { icon: makeLbl(loc.name), interactive: false }).addTo(map));
+                mapLayers[loc.id] = ls;
+            });
+        }
+
+        function selectStudyLoc(id) {
+            if (mode !== 'study') return;
+            selectedId = id;
+            const loc = LOCATIONS.find(l => l.id === id);
+            document.querySelectorAll('.loc-item').forEach(el => el.classList.remove('active'));
+            const el = document.querySelector(`[data-id="${id}"]`);
+            if (el) { el.classList.add('active'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+            document.getElementById('info-panel').innerHTML = `
+    <div class="tags"><span class="tag">${loc.type === 'point' ? '📍 Point' : '🗺️ Region'}</span><span class="tag" style="border-color:#7a5910;color:#c9a843;">${loc.period}</span></div>
+    <h3>${loc.name}</h3><p class="desc">${loc.desc}</p>
+    <div class="hint-box">💡 <strong>Map Hint:</strong> ${loc.hint}</div>`;
+            map.flyTo([loc.lat, loc.lng], Math.max(map.getZoom(), 4), { duration: .7 });
+            // pulse highlight
+            if (mapLayers[id]) mapLayers[id].forEach(l => {
+                if (l instanceof L.CircleMarker && !(l instanceof L.Circle)) {
+                    l.setStyle({ radius: 13, color: '#d4a843', weight: 3 });
+                    setTimeout(() => { if (mapLayers[id]) l.setStyle({ radius: loc.type === 'point' ? 7 : 5, color: loc.type === 'point' ? '#4a9eff' : '#ff8c42', weight: 2 }); }, 1200);
+                }
+            });
+        }
+
+        function buildStudySidebar() {
+            document.getElementById('location-list').innerHTML = LOCATIONS.map(loc => `
+    <div class="loc-item" data-id="${loc.id}" onclick="selectStudyLoc(${loc.id})">
+      <span class="loc-name">${loc.name}</span>
+      <div class="loc-badges"><span style="font-size:.7em;">${loc.type === 'point' ? '🔵' : '🟠'}</span><div class="status-dot" id="sdot-${loc.id}"></div></div>
+    </div>`).join('');
+        }
+
+        function setMode(m) {
+            mode = m;
+            ['study', 'quiz', 'review'].forEach(x => {
+                document.getElementById(`btn-${x}`).classList.toggle('active', x === m);
+                const el = document.getElementById(`${x}-sidebar`);
+                el.style.display = x === m ? 'flex' : 'none';
+                if (x === m) { el.style.flexDirection = 'column'; el.style.flex = '1'; }
+            });
+            document.getElementById('info-panel').style.display = m === 'study' ? 'block' : 'none';
+            document.getElementById('map').classList.remove('quiz-mode');
+            if (m === 'study') { if (quiz.listener) { map.off('click', quiz.listener); quiz.listener = null; } drawStudyMarkers(); }
+            else if (m === 'quiz') {
+                buildQuizList();
+                if (!quiz.active) { document.getElementById('quiz-current').style.display = 'none'; document.getElementById('quiz-start-screen').style.display = 'flex'; }
+            } else if (m === 'review') { buildReview(); }
+        }
+
+        function startQuiz() {
+            const order = document.getElementById('quiz-order').value;
+            quiz.hardMode = document.getElementById('quiz-diff').value === 'hard';
+            let q = [...LOCATIONS];
+            if (order === 'random') q.sort(() => Math.random() - .5);
+            else if (order === 'missed') {
+                const mids = allResults.filter(r => r.points < 40).map(r => r.loc.id);
+                q.sort((a, b) => { const am = mids.includes(a.id), bm = mids.includes(b.id); return am && !bm ? -1 : !am && bm ? 1 : Math.random() - .5; });
+            }
+            quiz = { active: true, queue: q, idx: 0, results: [], hardMode: quiz.hardMode, listener: null, fmks: [] };
+            clearML();
+            document.getElementById('quiz-start-screen').style.display = 'none';
+            document.getElementById('quiz-current').style.display = 'block';
+            document.getElementById('hint-btn').style.display = quiz.hardMode ? 'none' : 'inline-block';
+            map.flyTo([20, -25], 3, { duration: .4 });
+            updateSB(); buildQuizList(); nextQ();
+        }
+
+        function nextQ() {
+            quiz.fmks.forEach(l => l.remove()); quiz.fmks = [];
+            if (quiz.idx >= quiz.queue.length) { endQuiz(); return; }
+            const loc = quiz.queue[quiz.idx];
+            document.getElementById('quiz-q-name').textContent = `Where is ${loc.name}?`;
+            document.getElementById('quiz-q-meta').innerHTML = `<span class="tag">${loc.type === 'point' ? '📍 Point' : '🗺️ Region'}</span><span class="tag" style="border-color:#7a5910;color:#c9a843;">${loc.period}</span>`;
+            document.getElementById('hint-text').textContent = loc.hint;
+            document.getElementById('hint-text').style.display = 'none';
+            document.getElementById('hint-btn').textContent = '💡 Show Hint';
+            document.getElementById('quiz-progress').textContent = `Question ${quiz.idx + 1} of ${quiz.queue.length}`;
+            document.getElementById('map').classList.add('quiz-mode');
+            document.querySelectorAll('#quiz-list .loc-item').forEach(el => el.classList.remove('active'));
+            const li = document.getElementById(`qdot-item-${loc.id}`);
+            if (li) { li.classList.add('active'); li.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+            if (quiz.listener) map.off('click', quiz.listener);
+            quiz.listener = (e) => handleClick(e, loc);
+            map.on('click', quiz.listener);
+        }
+
+        function handleClick(e, loc) {
+            map.off('click', quiz.listener); quiz.listener = null;
+            document.getElementById('map').classList.remove('quiz-mode');
+            const { lat, lng } = e.latlng;
+            const dist = haversine(lat, lng, loc.lat, loc.lng);
+            const ratio = dist / loc.acceptKm;
+            let grade, points, emoji, cls;
+            if (ratio <= .4) { grade = 'Perfect!'; points = 100; emoji = '🎯'; cls = 'fb-perfect'; }
+            else if (ratio <= 1.0) { grade = 'Close!'; points = 75; emoji = '✅'; cls = 'fb-close'; }
+            else if (ratio <= 2.0) { grade = 'Decent'; points = 40; emoji = '⚠️'; cls = 'fb-decent'; }
+            else { grade = 'Missed'; points = 0; emoji = '❌'; cls = 'fb-missed'; }
+            const result = { loc, dist, grade, points, clickLat: lat, clickLng: lng };
+            quiz.results.push(result); allResults.push(result); quiz.idx++;
+            updateSB();
+            const cc = points >= 75 ? '#4caf50' : points >= 40 ? '#ff9800' : '#f44336';
+            quiz.fmks.push(
+                L.circleMarker([lat, lng], { radius: 9, color: cc, fillColor: cc, fillOpacity: .7, weight: 2 }).addTo(map),
+                L.circleMarker([loc.lat, loc.lng], { radius: 11, color: '#d4a843', fillColor: '#d4a843', fillOpacity: .85, weight: 3 }).addTo(map),
+                L.marker([loc.lat, loc.lng], { icon: makeLbl(loc.name, '#d4a843'), interactive: false }).addTo(map)
+            );
+            if (loc.type === 'region') quiz.fmks.push(L.circle([loc.lat, loc.lng], { radius: loc.acceptKm * 1000, color: '#d4a843', fillOpacity: .07, weight: 1.5, dashArray: '6,4' }).addTo(map));
+            if (dist > loc.acceptKm * .3) quiz.fmks.push(L.polyline([[lat, lng], [loc.lat, loc.lng]], { color: '#7a5910', dashArray: '5,5', weight: 2 }).addTo(map));
+            const dot = document.getElementById(`qdot-${loc.id}`);
+            if (dot) dot.className = 'status-dot ' + (points >= 75 ? 'correct' : points >= 40 ? 'decent' : 'missed');
+            const sdot = document.getElementById(`sdot-${loc.id}`);
+            if (sdot) sdot.className = 'status-dot ' + (points >= 75 ? 'correct' : points >= 40 ? 'decent' : 'missed');
+            const bounds = L.latLngBounds([[lat, lng], [loc.lat, loc.lng]]);
+            map.fitBounds(bounds.pad(.5), { maxZoom: 6, duration: .5 });
+            showFB(loc, grade, dist, points, emoji, cls);
+        }
+
+        function showFB(loc, grade, dist, points, emoji, cls) {
+            const ds = dist < 5 ? 'Spot on!' : dist < 1000 ? `${Math.round(dist)} km away` : `${Math.round(dist / 100) * 100} km away`;
+            const hasMore = quiz.idx < quiz.queue.length;
+            document.getElementById('feedback').className = cls;
+            document.getElementById('feedback').innerHTML = `
+    <h2>${emoji} ${grade}</h2>
+    <div class="fb-locname">${loc.name}</div>
+    <div class="fb-dist">${ds} · <strong>${points}/100 pts</strong></div>
+    <div class="fb-desc">${loc.desc}</div>
+    <div class="fb-btn-row"><button class="fb-btn fb-next" onclick="nextFromFB()">${hasMore ? 'Next →' : 'See Results →'}</button></div>`;
+            document.getElementById('feedback').style.display = 'block';
+        }
+
+        function nextFromFB() { document.getElementById('feedback').style.display = 'none'; nextQ(); }
+
+        function endQuiz() {
+            quiz.active = false; document.getElementById('map').classList.remove('quiz-mode');
+            const total = quiz.results.reduce((s, r) => s + r.points, 0);
+            const max = quiz.results.length * 100, pct = Math.round(total / max * 100);
+            const msg = pct >= 90 ? '🌟 Outstanding — you really know your Atlantic history!'
+                : pct >= 75 ? '✅ Great work! Check the Review tab for what you missed.'
+                    : pct >= 55 ? '📚 Good progress — use Study mode and hints, then try again!'
+                        : '🔄 Head to Study mode, read the hints, then come back!';
+            document.getElementById('feedback').className = 'fb-close';
+            document.getElementById('feedback').innerHTML = `
+    <h2 style="color:#d4a843;">Quiz Complete! 🏆</h2>
+    <div class="fb-locname">Score: ${pct}% — ${total}/${max} points</div>
+    <div class="fb-desc">${msg}</div>
+    <div class="fb-btn-row">
+      <button class="fb-btn fb-next" onclick="restartQuiz()">Try Again</button>
+      <button class="fb-btn fb-skip" onclick="document.getElementById('feedback').style.display='none';setMode('review')">Review →</button>
+    </div>`;
+            document.getElementById('feedback').style.display = 'block';
+            updateSB();
+        }
+
+        function restartQuiz() {
+            document.getElementById('feedback').style.display = 'none';
+            quiz.fmks.forEach(l => l.remove()); quiz.fmks = []; quiz.active = false;
+            clearML();
+            document.getElementById('quiz-start-screen').style.display = 'flex';
+            document.getElementById('quiz-current').style.display = 'none';
+            buildQuizList(); updateSB(); map.flyTo([20, -25], 3, { duration: .5 });
+        }
+
+        function updateSB() {
+            const c = quiz.results.filter(r => r.points >= 75).length;
+            const d = quiz.results.filter(r => r.points >= 40 && r.points < 75).length;
+            const m = quiz.results.filter(r => r.points < 40).length;
+            const p = quiz.results.length > 0 ? Math.round(quiz.results.reduce((s, r) => s + r.points, 0) / (quiz.results.length * 100) * 100) + '%' : '—';
+            document.getElementById('sq-correct').textContent = c;
+            document.getElementById('sq-decent').textContent = d;
+            document.getElementById('sq-miss').textContent = m;
+            document.getElementById('sq-pct').textContent = p;
+        }
+
+        function buildQuizList() {
+            document.getElementById('quiz-list').innerHTML = quiz.queue.map(loc => `
+    <div class="loc-item" id="qdot-item-${loc.id}">
+      <span class="loc-name">${loc.name}</span>
+      <div class="loc-badges"><span style="font-size:.7em;">${loc.type === 'point' ? '🔵' : '🟠'}</span><div class="status-dot" id="qdot-${loc.id}"></div></div>
+    </div>`).join('');
+        }
+
+        function toggleHint() {
+            const h = document.getElementById('hint-text');
+            const v = h.style.display === 'block';
+            h.style.display = v ? 'none' : 'block';
+            document.getElementById('hint-btn').textContent = v ? '💡 Show Hint' : '🙈 Hide Hint';
+        }
+
+        function buildReview() {
+            const list = document.getElementById('review-list');
+            const sb = document.getElementById('review-stats-bar');
+            if (allResults.length === 0) {
+                sb.style.display = 'none';
+                list.innerHTML = '<div style="padding:30px 16px;text-align:center;color:#7a5910;font-style:italic;font-size:.84em;">Take the quiz first — your results will appear here sorted from worst to best.</div>';
+                return;
+            }
+            const total = allResults.reduce((s, r) => s + r.points, 0);
+            const pct = Math.round(total / (allResults.length * 100) * 100);
+            const correct = allResults.filter(r => r.points >= 75).length;
+            const missed = allResults.filter(r => r.points < 40).length;
+            sb.style.display = 'flex';
+            sb.innerHTML = `
+    <div class="r-stat"><div class="r-stat-num">${pct}%</div><div class="r-stat-label">Overall</div></div>
+    <div class="r-stat"><div class="r-stat-num" style="color:#4caf50">${correct}</div><div class="r-stat-label">Correct</div></div>
+    <div class="r-stat"><div class="r-stat-num" style="color:#f44336">${missed}</div><div class="r-stat-label">Missed</div></div>
+    <div class="r-stat"><div class="r-stat-num">${allResults.length}</div><div class="r-stat-label">Total</div></div>`;
+            const seen = {}, deduped = [];
+            [...allResults].reverse().forEach(r => { if (!seen[r.loc.id]) { seen[r.loc.id] = true; deduped.unshift(r); } });
+            const sorted = [...deduped].sort((a, b) => a.points - b.points);
+            list.innerHTML = sorted.map(r => {
+                const ds = Math.round(r.dist) < 5 ? 'Spot on!' : Math.round(r.dist) + ' km off';
+                const cls = r.points >= 75 ? 'correct' : r.points >= 40 ? 'decent' : 'missed';
+                const emoji = r.points >= 75 ? '✅' : r.points >= 40 ? '⚠️' : '❌';
+                return `<div class="review-item ${cls}" onclick="reviewFly(${r.loc.lat},${r.loc.lng},${r.loc.id})">
+      <h4>${emoji} ${r.loc.name} <span style="float:right;font-weight:normal;font-size:.85em;">${r.points}/100</span></h4>
+      <div class="r-dist">${ds} · ${r.loc.type} · ${r.loc.period}</div>
+      <div class="r-hint">${r.loc.hint.substring(0, 110)}…</div>
+    </div>`;
+            }).join('');
+        }
+
+        function reviewFly(lat, lng, id) {
+            clearML();
+            const loc = LOCATIONS.find(l => l.id === id);
+            map.flyTo([lat, lng], 5, { duration: .8 });
+            mapLayers['rev'] = [
+                L.circleMarker([lat, lng], { radius: 12, color: '#d4a843', fillColor: '#d4a843', fillOpacity: .85, weight: 3 }).addTo(map),
+                L.marker([lat, lng], { icon: makeLbl(loc.name, '#d4a843'), interactive: false }).addTo(map)
+            ];
+            if (loc.type === 'region') mapLayers['rev'].push(L.circle([lat, lng], { radius: loc.acceptKm * 1000, color: '#d4a843', fillOpacity: .07, weight: 1.5, dashArray: '6,4' }).addTo(map));
+            document.getElementById('info-panel').style.display = 'block';
+            document.getElementById('info-panel').innerHTML = `
+    <div class="tags"><span class="tag">${loc.type === 'point' ? '📍 Point' : '🗺️ Region'}</span><span class="tag" style="border-color:#7a5910;color:#c9a843;">${loc.period}</span></div>
+    <h3>${loc.name}</h3><p class="desc">${loc.desc}</p>
+    <div class="hint-box">💡 <strong>Hint:</strong> ${loc.hint}</div>`;
+        }
+
+        function haversine(lat1, lng1, lat2, lng2) {
+            const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        function init() {
+            buildStudySidebar();
+            initMap();
+            setMode('study');
+        }
+
+        // Wait for DOM and Leaflet to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+
+</html>
