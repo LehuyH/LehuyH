@@ -48,7 +48,7 @@ export function ProjectsCards() {
     {
       name: "🦊 StudyKit",
       description:
-        "A web and mobile application helping 60,000+ students worldwide build healthy study habits.",
+        "A web and mobile application helping 100,000+ students worldwide build healthy study habits.",
       link: "https://studykit.app",
       component: StudyKitCard,
     },

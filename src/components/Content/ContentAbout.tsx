@@ -9,6 +9,7 @@ import {
   IconHTML,
   IconJava,
   IconNodeJS,
+  IconPalantir,
   IconPostgres,
   IconPython,
   IconReact,
@@ -31,14 +32,20 @@ export function ContentAbout() {
         </p>
         <p>
           Currently, I&apos;m studying Computer Science at{" "}
-          <BadgeLink Icon={IconBear} content="UC Berkeley" /> and a Software
-          Engineering Intern at{" "}
+          <BadgeLink Icon={IconBear} content="UC Berkeley" />. 
+          <br/><br/>
+          I&apos;ve
+          previously worked as a Software Engineering Intern at <BadgeLink
+            Icon={IconPalantir}
+            content="Palantir"
+            href="https://www.palantir.com"
+          />{" "}
+           and{" "}
           <BadgeLink
             Icon={IconCorsair}
             content="CORSAIR"
             href="https://www.corsair.com"
-          />
-          .
+          />.
         </p>
         <p>
           I love building things that make a difference! I&apos;m currently
@@ -48,7 +55,7 @@ export function ContentAbout() {
             content="StudyKit"
             href="https://studykit.app"
           />{" "}
-          used by 70,000+ students across 100+ countries, helping make learning
+          which is an app used by 100,000+ students across 100+ countries, helping make learning
           more accessible and engaging.
         </p>
         <p>

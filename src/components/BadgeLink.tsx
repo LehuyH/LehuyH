@@ -14,7 +14,7 @@ export function BadgeLink({
       className={`${href ? "hover:bg-zinc-200" : ""} inline-block rounded bg-zinc-100 no-underline transition-colors`}
     >
       <span
-        className={`${href ? "underline" : ""} flex items-center justify-center gap-2 px-1 py-0.5 text-sm`}
+        className={`${href ? "underline" : ""} flex items-center justify-center gap-1 px-1 py-0.5 text-sm`}
       >
         <Icon className="size-4" /> {content}
       </span>
