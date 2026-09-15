@@ -33,33 +33,13 @@ export default function HomePage() {
             >
               Projects
             </Link>
-            <Popover>
-              <PopoverContent className="flex flex-col gap-2">
-                <p>
-                  <Link
-                    className="inline-block border-b-2 border-transparent text-sky-600 hover:border-sky-400"
-                    target="_blank"
-                    href="/general/Lehuy_Hoang_Resume.pdf"
-                  >
-                    <LinkIcon className="inline-block size-4 align-middle" />{" "}
-                    General Resume
-                  </Link>
-                </p>
-                <p>
-                  <Link
-                    className="items-center gap-1 border-b-2 border-transparent text-sky-600 hover:border-sky-400"
-                    target="_blank"
-                    href="/Lehuy_Hoang_Resume.pdf"
-                  >
-                    <LinkIcon className="inline-block size-4 align-middle" />{" "}
-                    Web Developer Resume
-                  </Link>
-                </p>
-              </PopoverContent>
-              <PopoverTrigger className="rounded-xl bg-slate-400 px-12 py-2 font-serif text-white transition-all hover:brightness-110">
-                Resume
-              </PopoverTrigger>
-            </Popover>
+            <Link
+              target="_blank"
+              href="/Lehuy_Hoang_Resume.pdf"
+              className="rounded-xl bg-slate-400 px-12 py-2 font-serif text-white transition-all hover:brightness-110">
+              Resume
+            </Link>
+
           </aside>
           <aside className="pt-6 text-center">
             <a
