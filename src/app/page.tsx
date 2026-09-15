@@ -35,7 +35,7 @@ export default function HomePage() {
             </Link>
             <Link
               target="_blank"
-              href="/Lehuy_Hoang_Resume.pdf"
+              href="/Lehuy_Hoang_resume.pdf"
               className="rounded-xl bg-slate-400 px-12 py-2 font-serif text-white transition-all hover:brightness-110">
               Resume
             </Link>
